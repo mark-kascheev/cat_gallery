@@ -26,7 +26,7 @@ fun CatGalleryAppHost(
     navController: NavHostController,
 ) {
     val activity = (LocalContext.current as Activity)
-    NavHost(navController = navController, startDestination = onBoardingRoute) {
+    NavHost(navController = navController, startDestination = galleryRoute) {
         composable(onBoardingRoute) {
             OnBoardingScreen(onStartClick = {
                 navController.navigate(galleryRoute) {
