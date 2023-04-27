@@ -3,9 +3,9 @@ package com.example.catgallery.compose.gallery
 import android.graphics.BlurMaskFilter
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -24,19 +24,30 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.catgallery.R
+import com.example.catgallery.view_model.GalleryViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
+import com.example.catgallery.data.CatImage
+import kotlinx.coroutines.flow.Flow
 
 @Composable
-fun GalleryScreen() {
+fun GalleryScreen(
+    viewModel: GalleryViewModel = hiltViewModel(),
+) {
     Column(Modifier.padding(horizontal = 16.dp)) {
         AppBar()
         SearchBar()
         AnimalList()
-        Gallery()
+        Gallery(viewModel.cats)
     }
 }
 
 @Composable
-fun AppBar() {
+private fun AppBar() {
     Row(Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
         IconButton(onClick = { /*TODO*/ }) {
             Icon(painter = painterResource(id=  R.drawable.ic_menu), modifier = Modifier.size(24.dp), contentDescription = null)
@@ -47,7 +58,7 @@ fun AppBar() {
 }
 
 @Composable
-fun LocationInfo() {
+private fun LocationInfo() {
     Column {
         Row(modifier = Modifier.clickable {  }, horizontalArrangement = Arrangement.spacedBy(15.dp), verticalAlignment = Alignment.Top) {
             Text("Location")
@@ -60,7 +71,7 @@ fun LocationInfo() {
 }
 
 @Composable
-fun Profile() {
+private fun Profile() {
     Image(painter = painterResource(id = R.drawable.profile_picture), modifier = Modifier
         .size(50.dp)
         .clip(
@@ -69,7 +80,7 @@ fun Profile() {
 }
 
 @Composable
-fun SearchBar() {
+private fun SearchBar() {
     Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
             Card(Modifier.weight(2f), elevation = 3.dp) {
                 TextField(
@@ -100,7 +111,7 @@ fun SearchBar() {
 }
 
 @Composable
-fun AnimalList() {
+private fun AnimalList() {
     Row(modifier = Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
         AnimalItem("All")
         AnimalItem("Cat")
@@ -112,7 +123,7 @@ fun AnimalList() {
 }
 
 @Composable
-fun AnimalItem(title: String) {
+private fun AnimalItem(title: String) {
     Box(
         Modifier
             .clip(RoundedCornerShape(8.dp))
@@ -125,22 +136,30 @@ fun AnimalItem(title: String) {
 }
 
 @Composable
-fun Gallery() {
-    val list = List(20){it}
-    LazyVerticalGrid(columns = GridCells.Adaptive(100.dp)) {
-        items(list) {
-            GalleryItem()
+private fun Gallery(cats: Flow<PagingData<CatImage>>,) {
+    val pagingItems: LazyPagingItems<CatImage> = cats.collectAsLazyPagingItems()
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        items(
+            count = pagingItems.itemCount,
+            key = { index ->
+            val photo = pagingItems[index]
+            photo?.url ?: ""
+        }) {
+                index ->
+            val photo = pagingItems[index]?.url ?: return@items
+            GalleryItem(photo)
         }
     }
 }
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun GalleryItem() {
+private fun GalleryItem(url: String) {
     Card {
-        Image(
-            painter = painterResource(id = R.drawable.onboarding_cat),
+        GlideImage(
+            model = url,
             modifier = Modifier.size(100.dp),
-            contentDescription = null
+            contentDescription = null,
         )
     }
 }

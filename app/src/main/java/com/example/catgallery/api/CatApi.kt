@@ -10,11 +10,11 @@ import retrofit2.http.Query
 
 interface CatApi {
 
-    @GET("/images/search")
-    suspend fun getCatImages(@Query("limit") limit: Int = 10): CatImage
+    @GET("images/search")
+    suspend fun getCatImages(@Query("limit") limit: Int = 10): List<CatImage>
 
     companion object {
-        private const val BASE_URL = "https://api.thecatapi.com/v1"
+        private const val BASE_URL = "https://api.thecatapi.com/v1/"
 
         fun create(): CatApi {
             val logger = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }
