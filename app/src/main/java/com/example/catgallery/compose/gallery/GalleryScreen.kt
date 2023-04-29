@@ -42,7 +42,7 @@ fun GalleryScreen(
         AppBar()
         SearchBar()
         AnimalList()
-        Gallery(viewModel.combinedCats, onFavouriteClick = viewModel::toggleFavourite)
+        Gallery(viewModel.combinedCats, onFavouriteClick = viewModel::toggleFavourite, onDownloadClick= viewModel::downloadImage)
     }
 }
 
@@ -136,7 +136,7 @@ private fun AnimalItem(title: String) {
 }
 
 @Composable
-private fun Gallery(cats: Flow<PagingData<GalleryItemVM>>, onFavouriteClick: (GalleryItemVM) -> Unit) {
+private fun Gallery(cats: Flow<PagingData<GalleryItemVM>>, onFavouriteClick: (GalleryItemVM) -> Unit,onDownloadClick: (String) -> Unit) {
     val pagingItems: LazyPagingItems<GalleryItemVM> = cats.collectAsLazyPagingItems()
     LazyVerticalGrid(GridCells.Fixed(2), modifier = Modifier.fillMaxSize()) {
         items(
@@ -147,7 +147,7 @@ private fun Gallery(cats: Flow<PagingData<GalleryItemVM>>, onFavouriteClick: (Ga
         }) {
                 index ->
             val cat = pagingItems[index] ?: return@items
-            GalleryItem(cat, onFavouriteClick = {onFavouriteClick(cat)})
+            GalleryItem(cat, onFavouriteClick = {onFavouriteClick(cat)}, onDownloadClick = {onDownloadClick(cat.value.url)})
         }
     }
 }

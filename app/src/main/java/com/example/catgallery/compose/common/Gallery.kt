@@ -1,6 +1,7 @@
 package com.example.catgallery.compose.common
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,7 +21,7 @@ import com.example.catgallery.domain.entity.CatImage
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun GalleryItem(vm: GalleryItemVM, onFavouriteClick: () -> Unit) {
+fun GalleryItem(vm: GalleryItemVM, onFavouriteClick: () -> Unit, onDownloadClick: () -> Unit) {
     Card {
         Box {
             GlideImage(
@@ -28,7 +29,10 @@ fun GalleryItem(vm: GalleryItemVM, onFavouriteClick: () -> Unit) {
                 modifier = Modifier.size(100.dp),
                 contentDescription = null,
             )
-            FavouriteButton(vm.cached, onFavouriteClick = onFavouriteClick)
+            Row {
+                DownloadButton(onDownloadClick = onDownloadClick)
+                FavouriteButton(vm.cached, onFavouriteClick = onFavouriteClick)
+            }
         }
     }
 }
@@ -37,5 +41,12 @@ fun GalleryItem(vm: GalleryItemVM, onFavouriteClick: () -> Unit) {
 private fun FavouriteButton(isCached: Boolean, onFavouriteClick: () -> Unit) {
     IconButton(onClick =  onFavouriteClick) {
         Icon(painter = painterResource(id = R.drawable.ic_filled_fav), modifier = Modifier.size(24.dp), tint = if(isCached) Color.Red else Color.Gray, contentDescription = null)
+    }
+}
+
+@Composable
+private fun DownloadButton(onDownloadClick: () -> Unit) {
+    IconButton(onClick =  onDownloadClick) {
+        Icon(painter = painterResource(id = R.drawable.ic_save_image), modifier = Modifier.size(24.dp), contentDescription = null)
     }
 }

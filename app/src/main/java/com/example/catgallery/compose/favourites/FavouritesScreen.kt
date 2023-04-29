@@ -21,7 +21,7 @@ fun FavouritesScreen(viewModel: FavouritesViewModel = hiltViewModel()) {
             }) {
                 index ->
             val cat = cats[index]
-            GalleryItem(cat, onFavouriteClick = {viewModel.toggleFavourite(cat)})
+            GalleryItem(cat, onFavouriteClick = {viewModel.toggleFavourite(cat)}, onDownloadClick = {viewModel.downloadImage(cat.value.url)})
         }
     }
 

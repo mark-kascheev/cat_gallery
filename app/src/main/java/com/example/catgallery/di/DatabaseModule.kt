@@ -2,6 +2,8 @@ package com.example.catgallery.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.catgallery.data.IPictureDownloader
+import com.example.catgallery.data.PictureDownloaderImpl
 import com.example.catgallery.data.db.CatDao
 import com.example.catgallery.data.db.CatDatabase
 import dagger.Module
@@ -25,7 +27,13 @@ class DatabaseModule {
     }
 
     @Provides
-    fun providePlantDao(catDatabase: CatDatabase): CatDao {
+    fun provideCatDao(catDatabase: CatDatabase): CatDao {
         return catDatabase.catDao()
+    }
+
+    @Singleton
+    @Provides
+    fun providePictureDownloader(@ApplicationContext context: Context): IPictureDownloader {
+        return PictureDownloaderImpl(context)
     }
 }

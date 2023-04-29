@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.catgallery.compose.common.GalleryItemVM
 import com.example.catgallery.data.FavouritesRepository
+import com.example.catgallery.data.IPictureDownloader
 import com.example.catgallery.domain.entity.CatImage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FavouritesViewModel @Inject constructor(private val cacheRepository: FavouritesRepository) : ViewModel() {
+class FavouritesViewModel @Inject constructor(private val cacheRepository: FavouritesRepository, private val downloader: IPictureDownloader) : ViewModel() {
     private val favouritesState = MutableStateFlow<List<GalleryItemVM>>(emptyList())
     val favourites = favouritesState.asStateFlow()
 
@@ -32,6 +33,12 @@ class FavouritesViewModel @Inject constructor(private val cacheRepository: Favou
             }else {
                 cacheRepository.addCat(item.value)
             }
+        }
+    }
+
+    fun downloadImage(url: String) {
+        viewModelScope.launch {
+            downloader.downloadImage(url)
         }
     }
 }

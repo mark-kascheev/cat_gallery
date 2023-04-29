@@ -7,6 +7,7 @@ import androidx.paging.map
 import com.example.catgallery.compose.common.GalleryItemVM
 import com.example.catgallery.data.CatRepository
 import com.example.catgallery.data.FavouritesRepository
+import com.example.catgallery.data.IPictureDownloader
 import com.example.catgallery.domain.entity.CatImage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -14,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class GalleryViewModel @Inject constructor(private val repository: CatRepository, private val favouriteRepository: FavouritesRepository): ViewModel() {
+class GalleryViewModel @Inject constructor(private val repository: CatRepository, private val favouriteRepository: FavouritesRepository, private val downloader: IPictureDownloader): ViewModel() {
     private val favouriteCats = favouriteRepository.getCats()
     private val cats = repository.getCatImages().cachedIn(viewModelScope)
 
@@ -33,4 +34,10 @@ class GalleryViewModel @Inject constructor(private val repository: CatRepository
                 }
             }
         }
+
+    fun downloadImage(url: String) {
+        viewModelScope.launch {
+            downloader.downloadImage(url)
+        }
     }
+}
