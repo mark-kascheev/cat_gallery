@@ -70,6 +70,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
     /// Compose
     implementation "androidx.navigation:navigation-compose:$nav_version"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.31.1-alpha"
     /// Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$logger_version"

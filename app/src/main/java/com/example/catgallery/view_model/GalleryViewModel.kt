@@ -13,6 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Singleton
 
 @HiltViewModel
 class GalleryViewModel @Inject constructor(private val repository: CatRepository, private val favouriteRepository: FavouritesRepository, private val downloader: IPictureDownloader): ViewModel() {

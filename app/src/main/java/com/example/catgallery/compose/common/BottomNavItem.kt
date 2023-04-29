@@ -1,4 +1,4 @@
-package com.example.catgallery.compose
+package com.example.catgallery.compose.common
 
 import com.example.catgallery.R
 
