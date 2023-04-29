@@ -3,7 +3,6 @@ package com.example.catgallery.compose.gallery
 import android.graphics.BlurMaskFilter
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
@@ -31,7 +30,8 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.example.catgallery.data.CatImage
+import com.example.catgallery.compose.common.GalleryItem
+import com.example.catgallery.compose.common.GalleryItemVM
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -42,7 +42,7 @@ fun GalleryScreen(
         AppBar()
         SearchBar()
         AnimalList()
-        Gallery(viewModel.cats)
+        Gallery(viewModel.combinedCats, onFavouriteClick = viewModel::toggleFavourite)
     }
 }
 
@@ -136,31 +136,19 @@ private fun AnimalItem(title: String) {
 }
 
 @Composable
-private fun Gallery(cats: Flow<PagingData<CatImage>>,) {
-    val pagingItems: LazyPagingItems<CatImage> = cats.collectAsLazyPagingItems()
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
+private fun Gallery(cats: Flow<PagingData<GalleryItemVM>>, onFavouriteClick: (GalleryItemVM) -> Unit) {
+    val pagingItems: LazyPagingItems<GalleryItemVM> = cats.collectAsLazyPagingItems()
+    LazyVerticalGrid(GridCells.Fixed(2), modifier = Modifier.fillMaxSize()) {
         items(
             count = pagingItems.itemCount,
             key = { index ->
-            val photo = pagingItems[index]
-            photo?.url ?: ""
+            val cat = pagingItems[index]
+            cat?.value?.url ?: ""
         }) {
                 index ->
-            val photo = pagingItems[index]?.url ?: return@items
-            GalleryItem(photo)
+            val cat = pagingItems[index] ?: return@items
+            GalleryItem(cat, onFavouriteClick = {onFavouriteClick(cat)})
         }
-    }
-}
-
-@OptIn(ExperimentalGlideComposeApi::class)
-@Composable
-private fun GalleryItem(url: String) {
-    Card {
-        GlideImage(
-            model = url,
-            modifier = Modifier.size(100.dp),
-            contentDescription = null,
-        )
     }
 }
 

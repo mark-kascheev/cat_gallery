@@ -1,6 +1,7 @@
 package com.example.catgallery.api
 
-import com.example.catgallery.data.CatImage
+import com.example.catgallery.data.CatImageDto
+import com.example.catgallery.domain.entity.CatImage
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -11,7 +12,7 @@ import retrofit2.http.Query
 interface CatApi {
 
     @GET("images/search")
-    suspend fun getCatImages(@Query("limit") limit: Int = 10): List<CatImage>
+    suspend fun getCatImages(@Query("limit") limit: Int = 10): List<CatImageDto>
 
     companion object {
         private const val BASE_URL = "https://api.thecatapi.com/v1/"
