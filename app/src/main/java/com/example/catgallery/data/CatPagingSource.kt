@@ -5,15 +5,15 @@ import androidx.paging.PagingState
 import com.example.catgallery.api.CatApi
 import com.example.catgallery.domain.entity.CatImage
 
-class CatPagingSource (
+class CatPagingSource(
     private val api: CatApi,
-    ) : PagingSource<Int, CatImage>() {
+) : PagingSource<Int, CatImage>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CatImage> {
         return try {
             val page = params.key ?: 1
-            val response = api.getCatImages().map {dto -> dto.toModel()}
-            return  LoadResult.Page(
+            val response = api.getCatImages().map { dto -> dto.toModel() }
+            return LoadResult.Page(
                 data = response,
                 prevKey = null,
                 nextKey = page.plus(1),

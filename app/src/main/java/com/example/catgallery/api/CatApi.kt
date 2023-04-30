@@ -1,7 +1,6 @@
 package com.example.catgallery.api
 
 import com.example.catgallery.data.CatImageDto
-import com.example.catgallery.domain.entity.CatImage
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -18,7 +17,8 @@ interface CatApi {
         private const val BASE_URL = "https://api.thecatapi.com/v1/"
 
         fun create(): CatApi {
-            val logger = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }
+            val logger =
+                HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }
 
             val client = OkHttpClient.Builder()
                 .addInterceptor(logger)

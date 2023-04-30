@@ -13,7 +13,7 @@ interface CatDao {
     fun getCats(): Flow<List<CatImage>>
 
     @Insert
-    suspend  fun addCat(cat: CatImage)
+    suspend fun addCat(cat: CatImage)
 
     @Delete
     suspend fun deleteCat(cat: CatImage)

@@ -7,6 +7,6 @@ const val galleryRoute = "gallery"
 const val favouritesRoute = "favourites"
 
 enum class BottomNavItem(val iconId: Int, val route: String) {
-    Gallery(iconId = R.drawable.ic_gallery, route= galleryRoute),
-    Favourites(iconId = R.drawable.ic_filled_fav, route= favouritesRoute)
+    Gallery(iconId = R.drawable.ic_gallery, route = galleryRoute),
+    Favourites(iconId = R.drawable.ic_filled_fav, route = favouritesRoute)
 }
