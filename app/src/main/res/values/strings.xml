@@ -3,7 +3,7 @@
     <!--OnBoarding Screen-->
     <string name="start_button">Start</string>
     <string name="big_greeting">Everything for Cat lovers</string>
-    <string name="small_greeting">We helps you find the all type of cat you want for free</string>
+    <string name="small_greeting">We help you find the all type of cat you want for free</string>
     <!--AppBer-->
     <string name="location">Location</string>
     <string name="location_city_example">Berlin</string>
