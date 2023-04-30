@@ -10,4 +10,7 @@
     <string name="location_country_example">Germany</string>
     <!--Gallery Screen-->
     <string name="search_hint">Search</string>
+    <string name="empty_list">Sorry, we didn\'t find anything</string>
+    <string name="error_list">Ooops… Something went wrong</string>
+    <string name="error_pagination">Cannot load cats. Try it again</string>
 </resources>

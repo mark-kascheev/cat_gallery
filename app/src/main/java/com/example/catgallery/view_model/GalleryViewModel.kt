@@ -25,7 +25,6 @@ class GalleryViewModel @Inject constructor(private val repository: CatRepository
             GalleryItemVM(cat, cached.any { it.url == cat.url })
         }
     }
-
         fun toggleFavourite(item: GalleryItemVM) {
             viewModelScope.launch {
                 if(item.cached) {
